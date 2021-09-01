@@ -1,0 +1,15 @@
+{
+    "entrada1": [
+        {
+            "nome": "firefox.exe",
+            "tempoExecucao": "10",
+            "prioridade": "baixa",
+            "qtdMemoria": "20"
+        }, {
+            "nome": "tony.exe",
+            "tempoExecucao": "5",
+            "prioridade": "alta",
+            "qtdMemoria": "10"
+        }
+    ]
+}

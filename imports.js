@@ -1,3 +1,4 @@
-module.exports = require('uuidv4');
+global.uuidv4 = require('uuidv4');
+global.rxjs = require('rxjs');
 
-// browserify imports.js --s Bundle > js/bundle.js
+// browserify imports.js > js/bundle.js

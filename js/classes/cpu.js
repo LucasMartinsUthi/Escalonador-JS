@@ -31,6 +31,10 @@ class CPU {
         //update ui
 
         this.atualizaUIProcessos()
+
+        setInterval(() => {
+            
+        }, clock * 1000);
     }
 
     prioridade() {
@@ -53,6 +57,7 @@ class CPU {
         }
 
         $(".cpu_algoritimo").html(`<b>Algoritimo:</b> ${descsAlgoritimo[this.algoritimo]}`)
+        $(".cpu_fracao").html(`<b>Fracao CPU:</b> ${this.fracaoCpu}`)
         $(".cpu_nProcessos").html(`<b>Processos:</b> ${this.listaProcessos.length}`)
     }
 

@@ -1,7 +1,7 @@
 class Processo {
-    constructor({nome, tempoExecucao, prioridade, qtdMemoria, qtdExecutada = 0, PID}) {
+    constructor({nome, tempoExecucao, prioridade, qtdMemoria, qtdExecutada = 0, PID, UID}) {
         this.PID = PID
-        this.UID = uuidv4.uuid()
+        this.UID = UID
         this.nome = nome
         this.tempoExecucao = tempoExecucao
         this.prioridade = prioridade

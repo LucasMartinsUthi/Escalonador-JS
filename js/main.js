@@ -30,7 +30,7 @@ const entradas = {
 
 $(() => {
     //Cria CPU
-    const cpu = new CPU({algoritimo: "roundRobin", fracaoCpu: 10})
+    const cpu = new CPU({algoritimo: "roundRobin", fracaoCpu: 10, clock: 0.01})
 
     cpu.atualizaUI()
     cpu.atualizaUIProcessos()
@@ -53,7 +53,7 @@ $(() => {
                 return 
 
             let dados = e.split("|")
-            
+
             let processo = {
                 nome: dados[0],
                 PID: dados[1],

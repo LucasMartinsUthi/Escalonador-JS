@@ -11,7 +11,6 @@ class CPU {
         this.clock = clock
 
         this.listaProcessos = []
-        this.loteriasGeradas = 
     }
 
     executar() {
@@ -22,32 +21,53 @@ class CPU {
         }
     }
 
-    roundRobin(listaProcessos = this.listaProcessos) {
-        if(listaProcessos.filter(p => p.status == "Completo").length == 0)
-            return true
+    roundRobin(ticket) {
+        let listaProcessos = this.listaProcessos
 
-        
+        if(listaProcessos.filter(p => p.status == "Incompleto").length == 0)
+            return
 
-        
+        if(!!ticket){
+            if(listaProcessos[0].prioridade == ticket) {
+                listaProcessos[0].qtdExecutada += parseInt(this.fracaoCpu)
+                if(parseInt(listaProcessos[0].qtdExecutada) >= parseInt(listaProcessos[0].tempoExecucao)) {
+                    listaProcessos[0].status = "Completo"
+                    this.atualizaUIProcessos()
+                }
+            } 
+            
+        } else {
+            listaProcessos[0].qtdExecutada += parseInt(this.fracaoCpu)
+            if(parseInt(listaProcessos[0].qtdExecutada) >= parseInt(listaProcessos[0].tempoExecucao))
+                listaProcessos[0].status = "Completo"
 
-        setInterval(() => {
-            this.roundRobin()
-            this.atualizaUIProcessos()    
+            this.atualizaUIProcessos()
+        }
+
+        let processoRemovido = listaProcessos.shift()
+        listaProcessos.push(processoRemovido)
+
+        setTimeout(() => {
+            this.roundRobin(ticket)
         }, this.clock * 1000);
     }
 
     prioridade() {
-        console.log("funcao prioridade")
+        this.listaProcessos = this.listaProcessos.sort((a, b) => a.prioridade - b.prioridade)
+        this.roundRobin()
     }
 
     loteria() {
-        
-        let processosFiltrados = this.listaProcessos.filter(processo => {
-            return processo.prioridade == 20
-        })
+        if(this.listaProcessos.filter(p => p.status == "Incompleto").length == 0)
+            return
 
+        let ticket = Math.floor(Math.random() * 100)        
 
-        console.log(processosFiltrados)
+        this.roundRobin(ticket)
+
+        setTimeout(() => {
+            this.loteria()
+        }, this.clock * 1000);
 
     }
 
@@ -69,7 +89,8 @@ class CPU {
 
     atualizaUIProcessos() {
         let conteudo = ""
-        this.listaProcessos.forEach(({PID, nome, tempoExecucao, status, qtdExecutada}) => {
+        let lista = [...this.listaProcessos]
+        lista.reverse().forEach(({PID, nome, tempoExecucao, status, qtdExecutada}) => {
             let porcentagemExecutada = qtdExecutada / tempoExecucao * 100
             conteudo += `
                 <div class="d-flex" id="${PID}">

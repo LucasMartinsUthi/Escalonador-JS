@@ -14,6 +14,7 @@ class CPU {
     }
 
     executar() {
+        //Executa o algoritmo escolhido
         try {
             this[this.algoritimo]()
         } catch (err) {
@@ -24,9 +25,11 @@ class CPU {
     roundRobin(ticket) {
         let listaProcessos = this.listaProcessos
 
+        //Verifico se todos processos foram completo e termino a recursão 
         if(listaProcessos.filter(p => p.status == "Incompleto").length == 0)
             return
 
+        //roundRobin com ticket gerado pela loteria
         if(!!ticket){
             if(listaProcessos[0].prioridade == ticket) {
                 listaProcessos[0].qtdExecutada += parseInt(this.fracaoCpu)
@@ -35,7 +38,8 @@ class CPU {
                     this.atualizaUIProcessos()
                 }
             } 
-            
+        
+        //roundRobin normal
         } else {
             listaProcessos[0].qtdExecutada += parseInt(this.fracaoCpu)
             if(parseInt(listaProcessos[0].qtdExecutada) >= parseInt(listaProcessos[0].tempoExecucao))
@@ -44,25 +48,29 @@ class CPU {
             this.atualizaUIProcessos()
         }
 
+        //Jogo o primeiro processo para o final da lista
         let processoRemovido = listaProcessos.shift()
         listaProcessos.push(processoRemovido)
 
+        //recursividade
         setTimeout(() => {
             this.roundRobin(ticket)
         }, this.clock * 1000);
     }
 
     prioridade() {
+        //Ordenos os precessos por odem de prioridade e executo o roundRobin ordenado
         this.listaProcessos = this.listaProcessos.sort((a, b) => a.prioridade - b.prioridade)
         this.roundRobin()
     }
 
     loteria() {
+        //Verifico se todos processos foram completo e termino a recursão 
         if(this.listaProcessos.filter(p => p.status == "Incompleto").length == 0)
             return
 
         let ticket = Math.floor(Math.random() * 100)        
-
+        //Realizo um roundRobin baseado em uma prioridade(ticket) aleatoria
         this.roundRobin(ticket)
 
         setTimeout(() => {
@@ -75,6 +83,7 @@ class CPU {
         this.listaProcessos.push(processo)
     }
 
+    //Funções para atualizar a interface
     atualizaUI() {
         let descsAlgoritimo = {
             roundRobin : "Round Robin",

@@ -34,7 +34,7 @@ class CPU {
 
         setInterval(() => {
             
-        }, clock * 1000);
+        }, this.clock * 1000);
     }
 
     prioridade() {

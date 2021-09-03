@@ -11,6 +11,7 @@ class CPU {
         this.clock = clock
 
         this.listaProcessos = []
+        this.loteriasGeradas = 
     }
 
     executar() {
@@ -21,19 +22,17 @@ class CPU {
         }
     }
 
-    roundRobin() {
-        console.log("funcao circular")
+    roundRobin(listaProcessos = this.listaProcessos) {
+        if(listaProcessos.filter(p => p.status == "Completo").length == 0)
+            return true
 
-        console.log(this.listaProcessos)
+        
 
-        //set time interval
-        //check for complition
-        //update ui
-
-        this.atualizaUIProcessos()
+        
 
         setInterval(() => {
-            
+            this.roundRobin()
+            this.atualizaUIProcessos()    
         }, this.clock * 1000);
     }
 
@@ -42,7 +41,14 @@ class CPU {
     }
 
     loteria() {
-        console.log("funcao loteria")
+        
+        let processosFiltrados = this.listaProcessos.filter(processo => {
+            return processo.prioridade == 20
+        })
+
+
+        console.log(processosFiltrados)
+
     }
 
     addProcessos(processo) {
@@ -65,7 +71,6 @@ class CPU {
         let conteudo = ""
         this.listaProcessos.forEach(({PID, nome, tempoExecucao, status, qtdExecutada}) => {
             let porcentagemExecutada = qtdExecutada / tempoExecucao * 100
-            console.log(porcentagemExecutada)
             conteudo += `
                 <div class="d-flex" id="${PID}">
                     <div class=" col-2 nomeProcesso">${nome}</div>
